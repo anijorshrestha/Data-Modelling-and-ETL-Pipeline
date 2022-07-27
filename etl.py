@@ -6,6 +6,16 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
+    """
+    This function processes a song file whose filepath has been provided as an arugment.
+    It extracts the song information in order to store it into the songs table.
+    Then it extracts the artist information in order to store it into the artists table.
+
+    INPUTS: 
+    * cur the cursor variable
+    * filepath the file path to the song file
+    """
+
     # open song file
     df = pd.read_json(filepath, lines= True)
 
@@ -19,6 +29,18 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """
+    This fucntion processes a log file whose filepath has been provided as an arugment.
+    It filters the file with 'NextSong' filter, coverts the timestamp to datetime and insert into time table.
+    Likewise user info columns are retrieved and inserted in user column.
+    song_id and artist_id is retrieved by joining artists and songs table on the basis of artists_is with filter of song,artist     and length.
+    Then songplays table is populated using retieved artist and song id with other user information
+
+    INPUTS: 
+    * cur the cursor variable
+    * filepath the file path to the song file
+    """
+
     # open log file
     df = pd.read_json(filepath, lines= True)
 
@@ -61,6 +83,16 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    """
+    This function takes connection, cursor, filepath and function as input. With the help of filepath, it gets all the files         matching the extension from the directoy, dispalys total number of file found and iterate over those file to another             function provided.
+    
+    INPUTS: 
+    * conn for the connection to database
+    * cur the cursor variable
+    * filepath the file path to the song file
+    * func to use function to process either song or log
+    """
+
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
